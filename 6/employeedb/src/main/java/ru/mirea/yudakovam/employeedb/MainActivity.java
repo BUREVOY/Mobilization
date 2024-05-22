@@ -24,13 +24,9 @@ public class MainActivity extends AppCompatActivity {
         employee.id = 1;
         employee.name = "Арсений";
         employee.power = "Мобилки";
-        // запись сотрудников в базу
         employeeDao.insert(employee);
-        // Загрузка всех работников
         List<Employee> employees = employeeDao.getAll();
-        // Получение определенного работника с id = 1
         employee = employeeDao.getById(1);
-        // Обновление полей объекта
         employee.power = "Веб";
         employeeDao.update(employee);
     }
