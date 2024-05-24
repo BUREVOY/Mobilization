@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle	savedInstanceState)	{
         super.onCreate(savedInstanceState);
         binding	= ActivityMainBinding.inflate(getLayoutInflater());
+        //getRoot для возврата «ConstraintLayout» для вставки «contentView» в активность
         setContentView(binding.getRoot());
 
         binding.editTextMirea.setText("Мой	номер	по	списку	№ 30");

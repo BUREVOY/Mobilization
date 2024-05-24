@@ -21,18 +21,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //намерение выбора
         Intent intent = new Intent(Intent.ACTION_PICK);
+        //устанавливает любой тип для обработки
         intent.setType("*/*");
 //        intent.setType("image/*");
+        //просто колбек
         ActivityResultCallback<ActivityResult> callback = new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
+                //определяем успешность вызова
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     Log.d(MainActivity.class.getSimpleName(), "Data:" + data.getDataString());
                 }
             }
         };
+        //колбек сюда пихаем
+        //registerForActivityResult есть request code(с какой act пришел result) startActivity no
         ActivityResultLauncher<Intent> imageActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 callback);

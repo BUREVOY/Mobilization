@@ -18,9 +18,13 @@ public class MainActivity extends AppCompatActivity {
             fragment2 = new SecondFragment();
         }
         public void onClick(View view) {
+            //для упавления фрагментами
             fragmentManager = getSupportFragmentManager();
             int id = view.getId();
             if (id == R.id.btnFirstFragment){
+                //транзакция нужна чтобы группировать операции и выполнять их одновременно
+                //коммит - подтверждает завершение
+                //R.id.fragmentContainer в main activity
                 fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment1).commit();
             }else if (id == R.id.btnSecondFragment){
                 fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment2).commit();

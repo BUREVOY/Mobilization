@@ -43,16 +43,20 @@ public	class	MainActivity	extends	AppCompatActivity	{
 
         recordButton = binding.recordButton;
         playButton = binding.playButton;
+        //изначально кнопка проигрывания недоступна
         playButton.setEnabled(false);
+        //установка пути к аудиофайлу
         recordFilePath = (new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC),
                 "/audiorecordtest.3gp")).getAbsolutePath();
 
+        //проверка разрешений
         int audioRecordPermissionStatus = ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO);
         int storagePermissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (audioRecordPermissionStatus == PackageManager.PERMISSION_GRANTED &&
                 storagePermissionStatus == PackageManager.PERMISSION_GRANTED) {
             isWork = true;
         } else {
+            //запрос на разрешения
             ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.RECORD_AUDIO,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
         }
@@ -60,8 +64,10 @@ public	class	MainActivity	extends	AppCompatActivity	{
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //кошда нажимаем на запись и нужно записывать
                 if (isStartRecording) {
                     recordButton.setText("Запись остановлена");
+                    //когда записываем, нельзя проигрывать
                     playButton.setEnabled(false);
                     startRecording();
                 } else {
@@ -79,6 +85,7 @@ public	class	MainActivity	extends	AppCompatActivity	{
                 if (isStartPlaying) {
                     playButton.setText("Остановить воспроизведение");
                     recordButton.setEnabled(false);
+                    //запись бесконечно крутится, пока не остановлена
                     startPlaying();
                 } else {
                     playButton.setText("Начать воспроизведение");
@@ -90,6 +97,7 @@ public	class	MainActivity	extends	AppCompatActivity	{
         });
     }
 
+    //тот же запрос, что и в камере
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -104,11 +112,16 @@ public	class	MainActivity	extends	AppCompatActivity	{
 
     private void startRecording() {
         recorder = new MediaRecorder();
+        //1)источник аудио - микрофон
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        //2)формат входного файла
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        //3)фаловый путь
         recorder.setOutputFile(recordFilePath);
+        //4)Тип сжатия файла (узкая полоса частот в 8кГЦ)
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
+            //завершение инициализации MediaRecorder, далее только старт
             recorder.prepare();
         } catch (IOException e) {
             Log.d(TAG, "startRecording prepare() FAIL");
@@ -117,7 +130,10 @@ public	class	MainActivity	extends	AppCompatActivity	{
     }
 
     private void stopRecording() {
+        //прекращает запись и сохраняет данные в файл
         recorder.stop();
+        //Освобождение ресурсов, MediaRecorder больше не используется для записи
+        //это нужно для предотвращения утечек памяти
         recorder.release();
         recorder = null;
     }
@@ -125,8 +141,11 @@ public	class	MainActivity	extends	AppCompatActivity	{
     private void startPlaying() {
         player = new MediaPlayer();
         try {
+            //setDataSource задает источник аудио для MediaPlayer
             player.setDataSource(recordFilePath);
+            //бесконечное воспроизведение
             player.setLooping(true);
+            //блокирет выполнение до подготовки
             player.prepare();
             player.start();
         } catch (IOException e) {

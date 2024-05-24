@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:ems="10"
-        android:hint="любимый фильм"
+        android:hint="Любимый сериал"
         android:inputType="text"
         android:minHeight="48dp"
         android:text=""

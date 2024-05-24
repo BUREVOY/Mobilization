@@ -30,18 +30,24 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //точка входа для всех операций с фб
         mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     protected void onStart() {
+
         super.onStart();
+        //не нуль если вошел в систему
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        //если пользователь вошел, можно и юай обновить
         updateUI(currentUser);
     }
 
     private void updateUI(FirebaseUser user) {
+        //обновляет уи на основе текущего состояния пользователя
         if (user != null) {
+            //если не нуль, отображаем почту, айди, убираем кнопку войти
             binding.statusTextView.setText(getString(R.string.emailpassword_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
             binding.detailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
@@ -49,11 +55,13 @@ public class MainActivity extends AppCompatActivity{
             binding.linearSignOut.setVisibility(View.VISIBLE);
             binding.verifyEmailButton.setEnabled(!user.isEmailVerified());
         } else {
+            //выводим что вышли, кнопка войти видна, а выйти не видна
             binding.statusTextView.setText(R.string.signed_out);
             binding.detailTextView.setText(null);
             binding.linearSignIn.setVisibility(View.VISIBLE);
             binding.linearSignOut.setVisibility(View.GONE);
 
+            //кнопка войти обработчик
             binding.signInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity{
                     String password = binding.passwordEditText.getText().toString();
                     if (!email.isEmpty() && !password.isEmpty())
                     {
+                        //если не пустой имейл пароль
                         signIn(email, password);
                     } else {
                         Toast.makeText(MainActivity.this, "Заполните все поля!",
@@ -69,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            //выйти обработчик
             binding.signOutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -76,6 +86,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            //создать аккаунт обработчик
             binding.createAccountButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,6 +102,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            //верификация обработчик
             binding.verifyEmailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,6 +112,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    //создать аккаунт функция
     private void createAccount(String email, String password) {
         Log.d(TAG, "create account: " + email);
 
@@ -108,10 +121,12 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            //если успешны, выводим что молодцы и обновляем уи
                             Log.d(TAG, "createUserWithEmailAndPassword: success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
+                            //иначе выводим сообщение о провале и уи обновляем на нуль
                             Log.d(TAG, "createUserWithEmailAndPassword: failure");
                             Toast.makeText(MainActivity.this, "Authentication failed",
                                     Toast.LENGTH_SHORT).show();
@@ -121,17 +136,20 @@ public class MainActivity extends AppCompatActivity{
                 });
     }
 
+    //войти функция
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn: " + email);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //вошли - молодцы, обновляем интерфейс
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail: success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
+                            //не  вощли - тоже обновляем интерфейс
                             Log.d(TAG, "signInWithEmail: failure");
                             Toast.makeText(MainActivity.this, "Authentication failed",
                                     Toast.LENGTH_SHORT).show();
@@ -145,14 +163,18 @@ public class MainActivity extends AppCompatActivity{
                 });
     }
 
+    //выход функция
     private void signOut() {
         mAuth.signOut();
         updateUI(null);
     }
 
+    //верификация функция
     private void sendEmailVerification() {
+        //вырубаем кнопку
         binding.verifyEmailButton.setEnabled(false);
         final FirebaseUser user = mAuth.getCurrentUser();
+        //проверяем что юзер не нуль
         Objects.requireNonNull(user).sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override

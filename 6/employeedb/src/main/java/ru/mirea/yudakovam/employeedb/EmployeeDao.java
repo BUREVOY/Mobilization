@@ -8,8 +8,11 @@ import androidx.room.Update;
 
 import java.util.List;
 
+// DATA ACCESS OBJECT для добавления, удаления, формирования запросов
+// DATA ACCESS OBJECT отвечает за методы
 @Dao
 public interface EmployeeDao {
+    //запросы проверяются на этапе компиляции
     @Query("SELECT * FROM employee")
     List<Employee> getAll();
     @Query("SELECT * FROM employee WHERE id = :id")

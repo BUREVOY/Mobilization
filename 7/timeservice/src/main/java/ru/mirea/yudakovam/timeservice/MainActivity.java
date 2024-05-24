@@ -25,20 +25,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //создает и запускает GetTimeTask
                 GetTimeTask timeTask = new GetTimeTask();
                 timeTask.execute();
             }
         });
     }
     private class GetTimeTask extends AsyncTask<Void, Void, String> {
+        //операции в фоновом режиме
         @Override
         protected String doInBackground(Void... params) {
             String timeResult = "";
             try {
+                //сокет соединение
                 Socket socket = new Socket(host, port);
+                //создаем буфер (SocketUtils)
                 BufferedReader reader = SocketUtils.getReader(socket);
                 reader.readLine(); // игнорируем первую строку
                 timeResult = reader.readLine(); // считываем вторую строку
@@ -47,11 +52,14 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //это принимает onPostExecute
             return timeResult;
         }
+        //выполняется в основном потоке, после завершения фоновой задачи
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            //обновляет текст
             binding.textView.setText(result);
         }
     }

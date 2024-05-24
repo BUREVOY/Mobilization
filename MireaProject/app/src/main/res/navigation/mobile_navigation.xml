@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="ru.mirea.yudakovam.mireaproject.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="ru.mirea.yudakovam.mireaproject.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="ru.mirea.yudakovam.mireaproject.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/wokerFragment"
+        android:name="ru.mirea.yudakovam.mireaproject.WorkerFragment"
+        android:label="fragment_worker"
+        tools:layout="@layout/fragment_worker" />
+    <fragment
+        android:id="@+id/sensorlogic"
+        android:name="ru.mirea.yudakovam.mireaproject.SensorLogicFragment"
+        android:label="fragment_sensorlogic" />
+    <fragment
+        android:id="@+id/camera"
+        android:name="ru.mirea.yudakovam.mireaproject.CameraFragment"
+        android:label="fragment_camera" />
+    <fragment
+        android:id="@+id/audio"
+        android:name="ru.mirea.yudakovam.mireaproject.AudioFragment"
+        android:label="fragment_audio" />
+    <fragment
+        android:id="@+id/profile"
+        android:name="ru.mirea.yudakovam.mireaproject.ProfileFragment"
+        android:label="fragment_profile" />
+    <fragment
+        android:id="@+id/file"
+        android:name="ru.mirea.yudakovam.mireaproject.FileFragment"
+        android:label="fragment_file" />
+    <fragment
+        android:id="@+id/network"
+        android:name="ru.mirea.yudakovam.mireaproject.NetworkInfoFragment"
+        android:label="fragment_network_info" />
+    <fragment
+        android:id="@+id/map"
+        android:name="ru.mirea.yudakovam.mireaproject.MapFragment"
+        android:label="fragment_map" />
+    <fragment
+        android:id="@+id/dataFragment"
+        android:name="ru.mirea.yudakovam.mireaproject.DataFragment"
+        android:label="fragment_data"
+        tools:layout="@layout/fragment_data" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="ru.mirea.yudakovam.mireaproject.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" />
+</navigation>

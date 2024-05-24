@@ -35,16 +35,24 @@ public class MainActivity extends AppCompatActivity {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //getSystemService возвращает системный сервис для управления подключением к сети
+                //ConnectivityManager класс, который управляет сетевым соединением и
+                //предоставляет инфу о подключении
                 ConnectivityManager connectivityManager =
                         (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                //инфа о сети
                 NetworkInfo networkInfo = null;
+                //это нужно чтобы системный сервис был успешно получен
                 if (connectivityManager != null) {
+                    //данные о состоянии опдключения(тип(wifi), подключено\отключено)
                     networkInfo = connectivityManager.getActiveNetworkInfo();
                 }
 
                 if (networkInfo != null && networkInfo.isConnected()) {
+                    //устройство подключено к сети
                     new DownloadPageTask().execute("https://ipinfo.io/json"); // запуск нового потока
                 } else {
+                    //не подключено к сети
                     Toast.makeText(MainActivity.this, "Нет интернета", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -69,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //json попадает сюда после downloadIpInfo
         @Override
         protected void onPostExecute(String result) {
 
@@ -80,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
                         "\nРегион: " + responseJSON.getString("region") +
                         "\nСтрана: " + responseJSON.getString("country");
 
+                //вызов DownloadWeatherTask
                 new DownloadWeatherTask().execute("https://api.open-meteo.com/v1/forecast?latitude=" +
                         52.52 +
                         "&longitude=" +
                         13.41 +
                         "&current_weather=true");
+                //нижний текст появляется
                 binding.textViewLocate.setText(locate);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -93,27 +104,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private String downloadIpInfo(String address) throws IOException {
+            //для чтения данных из входящего потока
             InputStream inputStream = null;
+            //для данных
             String data = "";
             try {
                 URL url = new URL(address);
+                //открывается соединение
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                //таймаут чтения
                 connection.setReadTimeout(100000);
+                //таймаут подключенияк серверу
                 connection.setConnectTimeout(100000);
                 connection.setRequestMethod("GET");
+                //флаг для следования за редиректом
                 connection.setInstanceFollowRedirects(true);
+                //не юзать кэш
                 connection.setUseCaches(false);
+                //приложению дозволено читать данные с соединения
                 connection.setDoInput(true);
+                //ответ сервера
                 int responseCode = connection.getResponseCode();
 
                 if (responseCode == HttpURLConnection.HTTP_OK) {
+                    //поток ввода данных из ответа серва
                     inputStream = connection.getInputStream();
+                    //буферный поток
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     int read = 0;
+                    //цикл для считывания данных из потока в буфер(когда все байты прочитаны, будет -1)
                     while ((read = inputStream.read()) != -1) {
                         bos.write(read);
                     }
                     bos.close();
+                    //буфер в строку
                     data = bos.toString();
                 } else {
                     data = connection.getResponseMessage() + "Error Code " + responseCode;
@@ -122,10 +146,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+                //независимо от завершения выполнится
                 if (inputStream != null) {
                     inputStream.close();
                 }
             }
+            //возвращение данных в виде строки
             return data;
         }
     }
@@ -135,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            //сверху появляется загрузка
             super.onPreExecute();
             binding.textViewWeather.setText("Загрузка...");
 
@@ -145,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject responseJSON = new JSONObject(result);
                 JSONObject currentWeather = responseJSON.getJSONObject("current_weather");
-                // выводим локацию
+                // вывводим содержимое json сверху
                 String weather = "Температура: " + currentWeather.getString("temperature") + "°C" +
                         "\nСкорость ветра: " + currentWeather.getString("windspeed") + "km/h" +
                         "\nНаправление ветра: " + currentWeather.getString("winddirection") + "°";

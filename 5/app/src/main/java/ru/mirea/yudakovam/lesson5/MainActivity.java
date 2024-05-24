@@ -26,11 +26,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        //возвращаем список всех сенсоров
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        //привязывает listView
         ListView listSensor = binding.listView;
-        //	создаем	список	для	отображения	в	ListView	найденных	датчиков
+        //	создаем	список пар ключ-значение для	отображения	в	ListView	найденных	датчиков
         ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
+        //для каждого датчика добаляем название и диапазон
         for (int i = 0; i < sensors.size(); i++) {
             HashMap<String, Object> sensorTypeList = new HashMap<>();
             sensorTypeList.put("Name", sensors.get(i).getName());
@@ -40,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //	создаем	адаптер	и	устанавливаем	тип	адаптера	- отображение	двух	полей
         SimpleAdapter mHistory =
                 new SimpleAdapter(this, arrayList, android.R.layout.simple_list_item_2,
+                        //ключи из hashmap
                         new String[]{"Name", "Value"},
+                        //id полей, которые будут заполнены значениями
                         new int[]{android.R.id.text1, android.R.id.text2});
         listSensor.setAdapter(mHistory);
 
@@ -49,8 +54,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            //х, лево правно
             float valueAzimuth = event.values[0];
+            //У, вверх вниз
             float valuePitch = event.values[1];
+            //z, к ползователю, от него
             float valueRoll = event.values[2];
         }
     }

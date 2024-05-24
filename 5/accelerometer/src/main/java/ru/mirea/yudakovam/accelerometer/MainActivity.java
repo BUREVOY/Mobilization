@@ -20,27 +20,32 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //доступ к системе сенсоров
         sensorManager =
                 (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //текстовые поля
         azimuthTextView = findViewById(R.id.textViewAzimuth);
         pitchTextView = findViewById(R.id.textViewPitch);
         rollTextView = findViewById(R.id.textViewRoll);
     }
     @Override
     protected void onPause() {
+        //отмена регистрайии для освобождения ресурсов
         super.onPause();
         sensorManager.unregisterListener(this);
     }
     @Override
     protected void onResume() {
+        //инициализация датчиков
         super.onResume();
         sensorManager.registerListener(this, accelerometerSensor,
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
+        //проверяем тип сенсора, и если это акселерометр...
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float valueAzimuth = event.values[0];
             float valuePitch = event.values[1];

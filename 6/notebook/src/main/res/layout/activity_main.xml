@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextCitata"
+        android:id="@+id/editTextQuote"
         android:layout_width="355dp"
         android:layout_height="137dp"
         android:layout_marginTop="56dp"
@@ -39,7 +39,7 @@
         android:onClick="SaveData"
         android:text="сохранить"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCitata" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextQuote" />
 
     <Button
         android:id="@+id/buttonRead"
@@ -52,5 +52,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.842"
         app:layout_constraintStart_toEndOf="@+id/buttonWrite"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCitata" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextQuote" />
 </androidx.constraintlayout.widget.ConstraintLayout>

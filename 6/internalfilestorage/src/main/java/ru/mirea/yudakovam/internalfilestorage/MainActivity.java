@@ -21,10 +21,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SaveData(View view){
+        //здесь поток вывода для записи данных в файл
         FileOutputStream outputStream;
         try {
+            //открывается поток вывода, только текущее приложение имеет к нему доступ
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            //записываем в виде массива байт наше сообщение
             outputStream.write(binding.editTextText.getText().toString().getBytes());
+            //закрыватие потока вывода
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();

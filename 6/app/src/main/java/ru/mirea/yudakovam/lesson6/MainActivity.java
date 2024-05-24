@@ -19,18 +19,22 @@ public class MainActivity extends AppCompatActivity {
         binding	=	ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //MODE_PRIVATE для ограничения доступа к файлу настроек только родительского приложения
         SharedPreferences sharedPref = getSharedPreferences("mirea_settings",	Context.MODE_PRIVATE);
+        //editor - запись ключ-значение
         editor	=	sharedPref.edit();
 
+        //дефолтные значения(при повторном запуске берутся старые)
         binding.editTextGroup.setText(sharedPref.getString("GROUP", ""));
         binding.editTextList.setText(sharedPref.getString("LIST", ""));
-        binding.editTextFilm.setText(sharedPref.getString("FILM", ""));
+        binding.editTextFilm.setText(sharedPref.getString("SERIES", ""));
     }
 
     public void SaveData(View view){
         editor.putString("GROUP", binding.editTextGroup.getText().toString());
         editor.putString("LIST", binding.editTextList.getText().toString());
-        editor.putString("FILM", binding.editTextFilm.getText().toString());
+        editor.putString("SERIES ", binding.editTextFilm.getText().toString());
+        //для сохранения пар
         editor.apply();
     }
 }

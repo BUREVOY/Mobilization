@@ -18,6 +18,7 @@ public class ShareActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            //сюда приходит то что указали в getInfoAboutBook - MainActivity.KEY
             TextView ageView = findViewById(R.id.textViewBook);
             String university = extras.getString(MainActivity.KEY);
             ageView.setText(String.format("Любимая книга разработчика: %s", university));
@@ -28,6 +29,7 @@ public class ShareActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.editTextText);
         String text = "Название вашей любимой книги: " + editText.getText();
         Intent data = new Intent();
+        //то с чем будет колбек вызываться
         data.putExtra(MainActivity.USER_MESSAGE, text);
         setResult(Activity.RESULT_OK, data);
         finish();

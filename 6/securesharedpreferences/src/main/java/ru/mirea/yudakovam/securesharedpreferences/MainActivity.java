@@ -22,18 +22,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
+        //создание специикации генерации ключа шифрования по алгоритму
         KeyGenParameterSpec keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC;
         try {
+            //создание публичного ключа
             String mainKey = MasterKeys.getOrCreate(keyGenParameterSpec);
             SharedPreferences securePreferences = EncryptedSharedPreferences.create(
+                    //имя файла ностроек
                     "secret_shared_pref",
+
                     mainKey,
                     getBaseContext(),
+                    //шифрование ключей и их значений
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
+            //запись через securePreferences
             securePreferences.edit().putString("NAME", "Чехов А.П.").apply();
+            //дефолтное значение
             binding.textPoet.setText(securePreferences.getString("NAME", ""));
+            //картинка поэта
             binding.imagePoet.setImageResource(R.drawable.poet);
         } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);
