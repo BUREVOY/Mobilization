@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Стиль для красной кнопки -->
+    <style name="RedButtonStyle">
+        <item name="android:background">@android:color/holo_red_dark</item> <!-- Красный фон -->
+        <item name="android:textColor">@android:color/white</item> <!-- Белый текст -->
+        <item name="android:textSize">18sp</item> <!-- Размер текста -->
+        <item name="android:layout_width">wrap_content</item> <!-- Ширина по контенту -->
+        <item name="android:layout_height">wrap_content</item> <!-- Высота по контенту -->
+    </style>
+</resources>

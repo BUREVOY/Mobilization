@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "6921054888",
+    "project_id": "hhru-d6166",
+    "storage_bucket": "hhru-d6166.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6921054888:android:21d9353f81a8fecbd1b09d",
+        "android_client_info": {
+          "package_name": "com.example.hhru"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByBI6hUQF3v1Z8j7asMXJyivqL2iEmknU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
